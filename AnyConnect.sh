@@ -190,7 +190,7 @@ function ConfigOcserv {
         certtool --generate-privkey --outfile ca-key.pem
 
         cat << _EOF_ >ca.tmpl
-cn = "cisco VPN"
+cn = "cisco.info VPN"
 organization = "cisco.info"
 serial = 1
 expiration_days = 3650
@@ -205,7 +205,7 @@ _EOF_
         certtool --generate-privkey --outfile ${serverkey}
 
         cat << _EOF_ >server.tmpl
-cn = "cisco VPN"
+cn = "cisco.info VPN"
 o = "cisco"
 serial = 2
 expiration_days = 3650
@@ -240,10 +240,6 @@ _EOF_
     sed -i "s/cookie-timeout = 300/cookie-timeout = 86400/g" "${confdir}/ocserv.conf"
     sed -i 's$route = 192.168.1.0/255.255.255.0$#route = 192.168.1.0/255.255.255.0$g' "${confdir}/ocserv.conf"
     sed -i 's$route = 192.168.5.0/255.255.255.0$#route = 192.168.5.0/255.255.255.0$g' "${confdir}/ocserv.conf"
-
-    cat << _EOF_ >>${confdir}/ocserv.conf
-
-_EOF_
 
     #修改ocserv服务
     #sed -i "s#^ExecStart=#ExecStartPre=/usr/bin/firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -s 192.168.8.0/21 -j ACCEPT\nExecStartPre=/usr/bin/firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 192.168.8.0/21 -o ${eth} -j MASQUERADE\nExecStart=#g" "/usr/lib/systemd/system/ocserv.service"
